@@ -1,0 +1,15 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="col-lg-8 col-md-10 mx-auto">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy  }}
+        <p/>
+        <button type="submit" class="btn btn-primary" id="sendMessageButton">{{ button_name }} Post</button>
+    </form>
+</div>
+
+{% endblock content %}

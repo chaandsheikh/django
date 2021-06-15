@@ -1,0 +1,53 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<div class="col-lg-8 col-md-10 mx-auto">
+    {% for blog in blogs %}
+    <div class="post-preview">
+        <h2 class="post-title">
+            <a href="{% url 'blog-post-detail' blog.id   %}"> {{ blog.title }} </a>
+        </h2>
+        <p>
+            {{ blog.content|slice:":65" }} ... <a href="{% url 'blog-post-detail' blog.id   %}">read more </a>
+        </p>
+        <p class="post-meta">Posted by : {{ blog.author.username }}
+            on: {{ blog.post_created }}</p>
+    </div>
+    <hr>
+    {% endfor %}
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+
+
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+            </li>
+            {% endif %}
+
+
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+                </li>
+                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+</div>
+
+
+{% endblock content %}
